@@ -562,6 +562,11 @@ The lighthouse, the dock cranes and the fishing boats are still grey blocks. An 
 would let me finish them whenever you want it.
 ```
 
+If they reply that they would rather buy cubes than subscribe, that works on the free plan too:
+top-ups need no subscription and never expire. Show the packs from `thrixel_pricing` and pass
+the one they pick to `thrixel_buy_cubes(usd=...)`, the same as the paid flow below. Do not offer
+it unprompted here; the line above is the whole pitch.
+
 **Paid account: HARD STOP 3.** Here it is worth asking properly and waiting for the answer,
 the same as the other two gates. Ending the turn on "let me know if you want more" is not the
 same thing - it reads as a passing remark and tends to get scrolled past. This is the only time
