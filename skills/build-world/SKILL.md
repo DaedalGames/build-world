@@ -437,8 +437,9 @@ if your harness has none, ask in plain text and wait for a reply. Either way the
 "
 
 - **Upgrade for a full game** (recommended): a bigger cube balance covers the whole ranked
-  asset list at full quality, and the higher concurrent-job cap means assets generate in
-  bigger waves - which is the part you feel, since generation is the bulk of the wait.
+  asset list at full quality, and the higher concurrent-job cap means Architect assets
+  generate in bigger waves - which is the part you feel, since generation is the bulk of the
+  wait.
   **If the account is eligible for the free month, this option is $0 for the first 30 days**
   and should say so in as many words, along with the price after it and that it takes a card.
 - **Build with what I have**: a handful of assets, named from the balance you just divided
@@ -447,9 +448,13 @@ if your harness has none, ask in plain text and wait for a reply. Either way the
 "
 
 Say both halves. The second is easy to forget and it is the one they feel while waiting:
-generation is the long pole in a build, assets run in waves sized by the concurrent-job cap, so
-a bigger cap means fewer waves rather than just a longer asset list. Take both caps from
-`thrixel_pricing` if you want to name them, never from memory.
+generation is the long pole in a build, Architect assets run in waves sized by the
+concurrent-job cap, so a bigger cap means fewer waves rather than just a longer asset list.
+Sculptor, Detailer, retexture and rig jobs are different: they wait in a GPU queue shared by
+every account, so the cap lets you queue more of them but does not make a batch finish sooner.
+Do not promise a GPU-heavy build will be faster after an upgrade; `thrixel_account_status`
+shows how long that queue is right now. Take both caps from `thrixel_pricing` if you want to
+name them, never from memory.
 
 If they choose upgrade, call **`thrixel_upgrade_plan`** and give them the link it returns.
 On an account that has never subscribed that link may come back as a free first month;
@@ -592,7 +597,7 @@ than offering nothing. Tiers change; never decide this from memory or from this 
 
 ```
 - Move up a tier: a bigger monthly allowance, and a higher concurrent-job cap so future
-  builds run in bigger waves
+  Architect builds run in bigger waves
 - Top up cubes now to finish the lighthouse, dock cranes and fishing boats
 - Leave them as blocks for now, and keep playing what is there
 ```
@@ -778,13 +783,13 @@ texture rather than detail.
 | Sculptor | One flat operation, plus a reference image if you gave it only text | Cheaper from an image you already have |
 | Architect -> Detailer | Metered Architect **plus** one flat operation | The most expensive route. The detailer inherits the mesh, so no reference image is generated |
 
-So **Architect -> Detailer costs roughly 1.5x a Sculptor**. That ratio is the decision;
+So **Architect -> Detailer costs several times a Sculptor**. That ratio is the decision;
 the exact cube figures are not, and change without this file changing.
 
 **If the object will not be animated, reach for the Sculptor directly.** What Architect ->
 Detailer adds over a Sculptor is the named part hierarchy, and a static prop never uses it - so
-on something that just sits there you are paying ~1.5x for articulation the game will not
-touch. The Sculptor is built for exactly this case: static and organic subjects, one flat
+on something that just sits there you are paying several times over for articulation the
+game will not touch. The Sculptor is built for exactly this case: static and organic subjects, one flat
 price, the best organic shapes of the three paths. Pay the premium only where you need
 articulation *and* fidelity on the same asset: the hero vehicle, the main character, and little
 else.
@@ -806,18 +811,33 @@ at once.
   the right answer for a different kind of asset.
 - **Iterate with follow-up prompts.** `thrixel_edit_model` holds every part outside
   `focus_on_node_names` bit-identical, so refining is cheap and safe. Place the asset, look at
-  it in the scene, and revise it until it fits.
-- **Never pass an `image`.** Text prompts only, on every endpoint. Thrixel generates and manages
-  its reference imagery internally.
-- **Every asset arrives at roughly the same size.** Scale is normalised, so a castle keep and
-  a peasant import into the same bounding box. Nothing warns you; the castle just turns out to
-  be a garden shed. Set relative scale explicitly at import - decide the real-world size of
-  each asset class when you write the asset list, not when the scene looks wrong.
-- **Up is always Y. Only FORWARD varies.** Thrixel exports Y-up on every asset, as glTF
-  requires, so never write per-asset up-axis detection or a Z-up correction branch. glTF does
-  not define a forward axis, though, so a long axis can land on X where you expected Z: read
-  the bounding box or look at the thumbnail, decide the facing per asset, and correct it once
-  at import rather than discovering it when a vehicle drives sideways. (If a pivot listing from
+  it in the scene, and revise it until it fits. Sculptor results cannot be edited by prompt;
+  for "same model, but taller", wider, turned around or resized, use
+  `thrixel_transform_model`, which is free, instead of paying for a regeneration.
+- **Pass reference images when the user has them.** Concept art, a sketch or a photo is the
+  strongest steer there is: `thrixel_create_model` takes `images`, `thrixel_sculpt_model`
+  takes an `image`, and an earlier asset can be a style reference so a set stays consistent.
+  With no art, a text prompt is fine; Thrixel draws its own reference picture.
+- **Keep Sculptor prompts short.** The prompt is first turned into ONE three-quarter-view
+  picture, and only that picture becomes the mesh. One or two sentences about what that picture
+  shows work best; back sides, several objects or "mounted on a wall" context get lost or
+  garble it. Architect prompts can be longer.
+- **Set real-world size at generation.** Pass `target_size_m` (the longest side, in metres)
+  on create and sculpt, so a volleyball and a referee stand arrive at their own sizes. Without
+  it, every asset arrives at roughly the same size: a castle keep and a peasant fill the same
+  bounding box and nothing warns you. Decide each asset class's size when you write the asset
+  list, and resize a finished asset with `thrixel_transform_model`.
+- **Up is always Y. Check FORWARD.** Thrixel exports Y-up on every asset, as glTF requires,
+  so never write per-asset up-axis detection or a Z-up correction branch. Architect assets
+  face +Z. Sculptor assets follow their reference picture, so check the thumbnail: a scoreboard facing the wall or stands facing away from the court is a
+  rotation, so fix it once with `thrixel_transform_model` or at import rather than discovering
+  it when a vehicle drives sideways.
+- **What does not survive every path.** Glowing (emissive) materials survive only on Architect
+  assets; Sculptor, Detailer and retexture output carry colour, metal, roughness and alpha, so
+  make glow in the engine. A retexture never changes the shape, so carved or relief detail
+  (engraving, a decal sculpted into a tombstone) stays; regenerate to remove it.
+- **Variant sets**: for three or four consistent siblings of one prop, reuse the same
+  reference image or style reference across the calls rather than describing the style again. (If a pivot listing from
   `thrixel_group_parts` looks Z-up, that is Thrixel's internal working space, not the file -
   a real project once wrote "these assets came back Z-up" into a source comment on the strength
   of that listing and carried the wrong belief for its whole life.)
