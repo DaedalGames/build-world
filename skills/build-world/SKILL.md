@@ -392,26 +392,26 @@ left, rather than at a number estimated earlier.
 **On a paid plan (Pro / Studio): ask nothing.** Go straight to the engine. Interrupting a
 paying user to talk about plans is pure friction.
 
-<!-- first-month-free promo: remove this paragraph block when the campaign ends.
+<!-- first-month discount promo: remove this paragraph block when the campaign ends.
      Source of truth for the behaviour is thrixel_mcp/offers.py. -->
-**A free month never cancels the question. It only changes what the first option costs.**
+**A discount never cancels the question. It only changes what the first option costs.**
 Check `thrixel_account_status` before asking:
 
-- **Eligible right now** -> the first option becomes an upgrade to Pro for **$0**, free for
-  the first 30 days. Same two options, same hard stop.
+- **Eligible right now** -> the first option becomes an upgrade to Pro with the first month
+  discounted, at the price `thrixel_account_status` quotes. Same two options, same hard stop.
 - **Not eligible** -> the first option is the ordinary paid upgrade.
 
-Either way you stop and they answer. Do not let a free month talk you out of asking, and do
+Either way you stop and they answer. Do not let a discount talk you out of asking, and do
 not read "not eligible" as "no offer will ever exist" - a first-time account starts at the
 full signup grant, far above the line the offer is keyed to, so it is simply not eligible
 YET. That is still the ordinary ask.
 
 If the offer becomes available later in the build, `thrixel_publish_game` reports it with the
-finished game. Say it ONCE there, and not at all if you already offered a $0 upgrade up front.
+finished game. Say it ONCE there, and not at all if you already offered the discount up front.
 
 Relay what the tool gives you rather than writing your own version of it, and say the whole
-thing - a trial described as simply free, with no mention of what it costs afterwards or that
-it takes a card, is the kind of surprise that ends in a chargeback.
+thing - a discount quoted without the full monthly price that follows it is the kind of
+surprise that ends in a chargeback.
 
 **HARD STOP 1: on the free plan, before the first asset-generation step, ask.**
 The free plan does not provide enough capacity to generate and iterate on the assets typically
@@ -440,8 +440,8 @@ if your harness has none, ask in plain text and wait for a reply. Either way the
   asset list at full quality, and the higher concurrent-job cap means Architect assets
   generate in bigger waves - which is the part you feel, since generation is the bulk of the
   wait.
-  **If the account is eligible for the free month, this option is $0 for the first 30 days**
-  and should say so in as many words, along with the price after it and that it takes a card.
+  **If the account is eligible for the discounted first month, this option says so** in as
+  many words: the first-month price and the monthly price after it.
 - **Build with what I have**: a handful of assets, named from the balance you just divided
   up - a strong vertical slice rather than a full game.
 
@@ -457,9 +457,9 @@ shows how long that queue is right now. Take both caps from `thrixel_pricing` if
 name them, never from memory.
 
 If they choose upgrade, call **`thrixel_upgrade_plan`** and give them the link it returns.
-On an account that has never subscribed that link may come back as a free first month;
-the tool says so when it does. Pass on what it tells you in full, including the price
-after the trial and that starting it takes a card.
+On an account that has never subscribed that link may come back with a discounted first
+month; the tool says so when it does. Pass on what it tells you in full, including the
+monthly price after the first month.
 
 ```
 thrixel_upgrade_plan(tier="pro")
@@ -1472,13 +1472,13 @@ Give the user the URL as the first line of your reply - it is the thing they ask
 for. A random address like `zesty-panda-14743.thrixel.world` is normal and is
 theirs permanently.
 
-<!-- first-month-free promo: remove this paragraph when the campaign ends. -->
+<!-- first-month discount promo: remove this paragraph when the campaign ends. -->
 **If the tool's reply carries an offer, pass it on in that same message, once, after the
 link and after whatever is still unbuilt.** Order matters: the game first, the gaps second,
 the offer last. It reads as a reward for what they just made rather than a toll on it, and
 a user who has just watched their game come together is the one person best placed to judge
 whether more of it is worth paying for. Use the wording the tool gives you, whole - the
-price after the trial and the card requirement included - and do not raise it again later
+price after the first month included - and do not raise it again later
 in the session.
 
 **If they say yes, call `thrixel_upgrade_plan(tier="pro")` and give them the link it
