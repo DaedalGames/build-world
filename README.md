@@ -1,4 +1,4 @@
-# Thrixel Build World for ChatGPT
+# Thrixel Build World
 
 Describe a game and get a playable 3D browser game back, with a link you can share.
 
@@ -7,7 +7,7 @@ Build World plans the game, generates its 3D models with [Thrixel](https://thrix
 `https://<name>.thrixel.world` address that anyone can open in a browser, phone included.
 
 Everything runs on Thrixel's servers. There is nothing to install: add the plugin, connect
-your Thrixel account when ChatGPT asks, and ask for a game.
+your Thrixel account when asked, and ask for a game.
 
 ## Try it
 

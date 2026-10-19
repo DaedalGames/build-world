@@ -3,15 +3,15 @@ name: build-world
 description: Builds polished, fully playable 3D browser games in three.js, with high-quality .glb models from the Thrixel API, and publishes each finished game to a public thrixel.world link that anyone can play. Use when the user wants to make a game, build a playable prototype, or generate 3D assets, and also when they want to publish or host a game folder they already have, share a playable link, or list, rename, update, unpublish or find the link for a game they published earlier.
 ---
 
-# This is the ChatGPT build - read this section first
+# This is the hosted build - read this section first
 
-This copy of the skill runs in ChatGPT, not on the user's computer. The Thrixel connector
+This copy of the skill runs in a chat app (Claude or ChatGPT), not on the user's computer. The Thrixel connector
 is Thrixel's hosted server, and there is no local machine, terminal, GPU or browser for you
 to use. **Where anything below conflicts with this section, this section wins.**
 
 - **three.js only.** Unity, Unreal and Roblox need an engine installed on a computer. If the
   user asks for one of them, say this build makes three.js games and offer that, or point
-  them to the Claude Code or Codex version of Thrixel on their own machine.
+  them to the local Thrixel plugin for Claude Code or Codex on their own machine.
 - **Nothing to set up.** Sign-in happened when the connector was added.
 - **Static files, no build step.** Write plain HTML and ES modules. Load three.js from a CDN
   with an import map, for example:

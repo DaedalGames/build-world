@@ -10,7 +10,7 @@
     {
       "name": "thrixel",
       "source": "./",
-      "description": "Build playable 3D games with AI-generated assets. Bundles the build-world skill and the Thrixel connector: generate, refine and texture game-ready .glb models, then build the game around them in Three.js, Unity, Unreal or Roblox."
+      "description": "Build playable 3D browser games with AI-generated assets. Bundles the build-world skill and the hosted Thrixel connector: generate, refine and texture game-ready .glb models, build a three.js game around them, and publish it to a public link."
     }
   ]
 }
