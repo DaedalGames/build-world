@@ -1487,7 +1487,7 @@ deliberately does not: an unrequested payment link records that the account reac
 and at the end of a build nobody has asked for anything yet. Once they have asked, they have.
 
 Do not go looking for a link yourself and do not reuse the pricing-page one for this - the
-tool returns the free-month checkout, and only for an account that qualifies.
+tool returns the discounted checkout, and only for an account that qualifies.
 
 ## After the first publish
 
