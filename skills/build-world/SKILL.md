@@ -44,6 +44,8 @@ to use. **Where anything below conflicts with this section, this section wins.**
 - **Then give the user the link.** The publish result carries the game's public
   `https://<slug>.thrixel.world` URL; put it on the first line of your closing message.
   To change the game later, publish again with the same `game_id`: the link stays the same.
+  In a new conversation, get that `game_id` from `thrixel_list_games()` first; publishing
+  without it makes a second link and leaves the first one stale.
 
 # Cubes in this build
 
@@ -267,7 +269,7 @@ descriptions. The shape is what matters here, and it is stable even when the num
   to generate the image the run works from, and that is billed on its own - roughly a third
   again on top. Passing an image, or reusing one with `reference_image_id`, skips it. Budget
   the prompt-only case or your arithmetic is short on every one of them.
-- **Reduce triangles, rebake: free.** Always use `thrixel_reduce_triangles` to hit a triangle
+- **Reduce triangles, smaller textures: free.** Smaller textures come from `thrixel_download(texture_size=512 | 1024 | 2048)`. Always use `thrixel_reduce_triangles` to hit a triangle
   budget; never re-run the detailer at a lower target to make something lighter.
 - **Architect: metered on real usage and charged after the run**, so it varies by what the
   object is. Props are the cheap end, vehicles a little more, buildings more again, and
@@ -726,6 +728,11 @@ theirs permanently.
 - **Updates:** republish with the same `game_id` - the link never changes, and the old
   version keeps serving until the new one is fully deployed, so a failed republish never
   takes a live game down. Offer this when the user makes further changes to a published game.
+- **One game, one link, across conversations.** This build keeps no files between
+  conversations, so before a first publish call `thrixel_list_games()`: if the user already
+  published this game, pass its `game_id` instead of making a second link. The tool also
+  holds back a publish whose title or project matches an existing game and names it; pass
+  that `game_id`, or `new_game=true` only when the user wants a separate game at a new link.
 - **Unpublish** takes the game offline immediately; the address stays theirs and
   republishing revives it.
 - **Sharing is by link, and that is already the default.** The game's address is
